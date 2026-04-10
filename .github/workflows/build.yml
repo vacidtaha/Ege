@@ -19,6 +19,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Convert PNG to ICO
+        run: npx png-to-ico build/icon_win.png > build/icon_win.ico
+
       - name: Build Windows
         run: npx electron-builder --win --publish never
 

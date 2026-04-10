@@ -38,13 +38,13 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "build/icon_win.png"
+      "icon": "build/icon_win.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "installerIcon": "build/icon_win.png",
-      "uninstallerIcon": "build/icon_win.png"
+      "installerIcon": "build/icon_win.ico",
+      "uninstallerIcon": "build/icon_win.ico"
     }
   }
 }
