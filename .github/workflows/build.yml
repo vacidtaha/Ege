@@ -47,6 +47,14 @@ jobs:
       - name: Build Mac
         run: npx electron-builder --mac --publish never
 
+      - name: Ad-hoc Sign App
+        run: codesign --force --deep --sign - "dist/mac-arm64/Ege Palas OYS.app"
+
+      - name: Rebuild DMG with signed app
+        run: |
+          rm -f dist/*.dmg
+          hdiutil create -volname "Ege Palas OYS" -srcfolder "dist/mac-arm64/Ege Palas OYS.app" -ov -format UDZO "dist/Ege Palas OYS-1.0.0-arm64.dmg"
+
       - name: Upload Mac DMG
         uses: actions/upload-artifact@v4
         with:
