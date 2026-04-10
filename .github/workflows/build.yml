@@ -44,16 +44,30 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Mac
+      - name: Build Mac with ad-hoc signing
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: npx electron-builder --mac --publish never
 
-      - name: Ad-hoc Sign App
-        run: codesign --force --deep --sign - "dist/mac-arm64/Ege Palas OYS.app"
-
-      - name: Rebuild DMG with signed app
+      - name: Sign all binaries
         run: |
-          rm -f dist/*.dmg
-          hdiutil create -volname "Ege Palas OYS" -srcfolder "dist/mac-arm64/Ege Palas OYS.app" -ov -format UDZO "dist/Ege Palas OYS-1.0.0-arm64.dmg"
+          APP="dist/mac-arm64/Ege Palas OYS.app"
+          # Sign nested components first (correct order for Electron)
+          find "$APP/Contents/Frameworks" -type f -perm +111 -exec codesign --force --sign - {} \; 2>/dev/null || true
+          find "$APP/Contents/Frameworks" -name "*.framework" -exec codesign --force --sign - {} \; 2>/dev/null || true
+          find "$APP/Contents/Frameworks" -name "*.app" -exec codesign --force --sign - {} \; 2>/dev/null || true
+          # Sign the main app last
+          codesign --force --sign - "$APP"
+          # Verify
+          codesign --verify --verbose "$APP"
+
+      - name: Rebuild DMG
+        run: |
+          rm -f dist/*.dmg dist/*.blockmap
+          mkdir -p dist/dmg-contents
+          cp -R "dist/mac-arm64/Ege Palas OYS.app" dist/dmg-contents/
+          ln -s /Applications dist/dmg-contents/Applications
+          hdiutil create -volname "Ege Palas OYS" -srcfolder dist/dmg-contents -ov -format UDZO "dist/Ege Palas OYS-1.0.0-arm64.dmg"
 
       - name: Upload Mac DMG
         uses: actions/upload-artifact@v4
