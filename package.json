@@ -1,0 +1,50 @@
+{
+  "name": "egepalas-oys",
+  "version": "1.0.0",
+  "description": "Ege Palas Hotel Otel Yönetim Sistemi",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac"
+  },
+  "author": "Ege Palas Hotel",
+  "license": "MIT",
+  "dependencies": {
+    "@electron/rebuild": "^4.0.2",
+    "@electron/remote": "^2.1.0",
+    "better-sqlite3": "^12.5.0",
+    "flatpickr": "^4.6.13"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.egepalas.oys",
+    "productName": "Ege Palas OYS",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist/**"
+    ],
+    "mac": {
+      "category": "public.app-category.business",
+      "target": "dmg",
+      "icon": "build/icon.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon_win.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icon_win.png",
+      "uninstallerIcon": "build/icon_win.png"
+    }
+  }
+}
