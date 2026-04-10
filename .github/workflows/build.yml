@@ -20,10 +20,12 @@ jobs:
         run: npm install
 
       - name: Convert PNG to ICO
-        run: npx png-to-ico build/icon_win.png > build/icon_win.ico
+        shell: cmd
+        run: npx png-to-ico build\icon_win.png > build\icon_win.ico
 
       - name: Build Windows
-        run: npx electron-builder --win --publish never
+        shell: cmd
+        run: chcp 65001 && npx electron-builder --win --publish never
 
       - name: Upload Windows Installer
         uses: actions/upload-artifact@v4

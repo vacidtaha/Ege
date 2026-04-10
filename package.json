@@ -1,7 +1,7 @@
 {
   "name": "egepalas-oys",
   "version": "1.0.0",
-  "description": "Ege Palas Hotel Otel Yönetim Sistemi",
+  "description": "Ege Palas Hotel Management System",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
