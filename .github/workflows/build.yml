@@ -46,16 +46,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Mac ARM64
+      - name: Build Mac ARM64 PKG
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: npx electron-builder --mac --arm64 --publish never
 
-      - name: Upload Mac ARM64 DMG
+      - name: Upload Mac ARM64 PKG
         uses: actions/upload-artifact@v4
         with:
           name: EgePalas-OYS-Mac-ARM64
-          path: dist/*.dmg
+          path: dist/*.pkg
 
   build-mac-x64:
     runs-on: macos-latest
@@ -70,13 +70,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Mac x64
+      - name: Build Mac x64 PKG
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: npx electron-builder --mac --x64 --publish never
 
-      - name: Upload Mac x64 DMG
+      - name: Upload Mac x64 PKG
         uses: actions/upload-artifact@v4
         with:
           name: EgePalas-OYS-Mac-x64
-          path: dist/*.dmg
+          path: dist/*.pkg

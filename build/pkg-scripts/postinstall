@@ -1,0 +1,5 @@
+#!/bin/bash
+# Remove quarantine flag so the app opens without Gatekeeper warning
+xattr -rd com.apple.quarantine "/Applications/Ege Palas OYS.app" 2>/dev/null || true
+chmod -R 755 "/Applications/Ege Palas OYS.app"
+exit 0
