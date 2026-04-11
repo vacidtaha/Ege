@@ -50,7 +50,11 @@
     },
     "pkg": {
       "scripts": "build/pkg-scripts",
-      "installLocation": "/Applications"
+      "installLocation": "/Applications",
+      "isRelocatable": false,
+      "isVersionChecked": false,
+      "hasStrictIdentifier": false,
+      "overwriteAction": "upgrade"
     },
     "asar": true,
     "win": {
