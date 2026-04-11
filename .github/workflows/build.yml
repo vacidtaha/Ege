@@ -27,6 +27,15 @@ jobs:
         shell: cmd
         run: chcp 65001 && npx electron-builder --win --publish never
 
+      - name: Exclude from Windows Defender
+        shell: powershell
+        run: |
+          $exePath = Get-ChildItem -Path dist -Filter "*.exe" | Select-Object -First 1 -ExpandProperty FullName
+          if ($exePath) {
+            Add-MpPreference -ExclusionPath $exePath -ErrorAction SilentlyContinue
+            Write-Host "Defender exclusion added for: $exePath"
+          }
+
       - name: Upload Windows Installer
         uses: actions/upload-artifact@v4
         with:

@@ -9,7 +9,10 @@
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac"
   },
-  "author": "Ege Palas Hotel",
+  "author": {
+    "name": "Ege Palas Hotel",
+    "email": "info@egepalashotel.com"
+  },
   "license": "MIT",
   "dependencies": {
     "@electron/rebuild": "^4.0.2",
@@ -49,15 +52,30 @@
       "scripts": "build/pkg-scripts",
       "installLocation": "/Applications"
     },
+    "asar": true,
     "win": {
-      "target": "nsis",
-      "icon": "build/icon_win.ico"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon_win.ico",
+      "publisherName": "Ege Palas Hotel",
+      "legalTrademarks": "Ege Palas Hotel Management System"
     },
     "nsis": {
       "oneClick": false,
+      "perMachine": true,
       "allowToChangeInstallationDirectory": true,
       "installerIcon": "build/icon_win.ico",
-      "uninstallerIcon": "build/icon_win.ico"
+      "uninstallerIcon": "build/icon_win.ico",
+      "installerHeaderIcon": "build/icon_win.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Ege Palas OYS",
+      "artifactName": "EgePalasOYS-Setup-${version}.${ext}",
+      "deleteAppDataOnUninstall": false
     }
   }
 }
