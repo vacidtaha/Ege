@@ -33,7 +33,7 @@ jobs:
           name: EgePalas-OYS-Windows
           path: dist/*.exe
 
-  build-mac:
+  build-mac-arm64:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,33 +46,37 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Mac with ad-hoc signing
+      - name: Build Mac ARM64
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
-        run: npx electron-builder --mac --publish never
+        run: npx electron-builder --mac --arm64 --publish never
 
-      - name: Sign all binaries
-        run: |
-          APP="dist/mac-arm64/Ege Palas OYS.app"
-          # Sign nested components first (correct order for Electron)
-          find "$APP/Contents/Frameworks" -type f -perm +111 -exec codesign --force --sign - {} \; 2>/dev/null || true
-          find "$APP/Contents/Frameworks" -name "*.framework" -exec codesign --force --sign - {} \; 2>/dev/null || true
-          find "$APP/Contents/Frameworks" -name "*.app" -exec codesign --force --sign - {} \; 2>/dev/null || true
-          # Sign the main app last
-          codesign --force --sign - "$APP"
-          # Verify
-          codesign --verify --verbose "$APP"
-
-      - name: Rebuild DMG
-        run: |
-          rm -f dist/*.dmg dist/*.blockmap
-          mkdir -p dist/dmg-contents
-          cp -R "dist/mac-arm64/Ege Palas OYS.app" dist/dmg-contents/
-          ln -s /Applications dist/dmg-contents/Applications
-          hdiutil create -volname "Ege Palas OYS" -srcfolder dist/dmg-contents -ov -format UDZO "dist/Ege Palas OYS-1.0.0-arm64.dmg"
-
-      - name: Upload Mac DMG
+      - name: Upload Mac ARM64 DMG
         uses: actions/upload-artifact@v4
         with:
-          name: EgePalas-OYS-Mac
+          name: EgePalas-OYS-Mac-ARM64
+          path: dist/*.dmg
+
+  build-mac-x64:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Mac x64
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: npx electron-builder --mac --x64 --publish never
+
+      - name: Upload Mac x64 DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: EgePalas-OYS-Mac-x64
           path: dist/*.dmg
